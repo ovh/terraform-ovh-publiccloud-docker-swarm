@@ -15,5 +15,5 @@ output "etcd_join_nodes" {
 
 output "security_group_id" {
   description = "The security group id of the docker swarm nodes."
-  value = "${openstack_networking_secgroup_v2.sg.id}"
+  value = "${var.count > 0 ? element(openstack_networking_secgroup_v2.sg.*.id,0) : ""}"
 }
