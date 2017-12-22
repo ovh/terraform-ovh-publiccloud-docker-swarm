@@ -17,6 +17,7 @@ resource "openstack_compute_keypair_v2" "keypair" {
 
 module "network" {
   source = "ovh/publiccloud-network/ovh"
+  version = ">= 0.0.10"
 
   project_id     = "${var.project_id}"
   attach_vrack   = false
@@ -38,10 +39,11 @@ module "network" {
 }
 
 module "public_cluster" {
-  source          = "ovh/publiccloud-docker-swarm/ovh"
+source ="../.."
   name            = "mypublicswarm"
   region          = "${var.region}"
   count           = 3
+  network_id      = "${module.network.network_id}"
   subnet_ids      = ["${module.network.public_subnets}"]
   ssh_public_keys = ["${openstack_compute_keypair_v2.keypair.public_key}"]
   public_facing   = true
