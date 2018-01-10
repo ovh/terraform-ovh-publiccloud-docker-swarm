@@ -1,11 +1,11 @@
 output "public_nodes_ip_addrs" {
   description = "A list of public ipv4 of public facing nodes."
-  value = ["${openstack_networking_port_v2.public_port_nodes.*.all_fixed_ips}"]
+  value = ["${compact(split(",", replace(join(",", flatten(openstack_networking_port_v2.public_port_nodes.*.all_fixed_ips)), "/[[:alnum:]]+:[^,]+/", "")))}"]
 }
 
 output "nodes_ip_addrs" {
   description = "The list of ipv4 of nodes."
-  value = ["${openstack_networking_port_v2.port_nodes.*.all_fixed_ips}"]
+  value = ["${compact(split(",", replace(join(",", flatten(openstack_networking_port_v2.port_nodes.*.all_fixed_ips)), "/[[:alnum:]]+:[^,]+/", "")))}"]
 }
 
 output "etcd_join_nodes" {
